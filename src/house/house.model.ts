@@ -1,4 +1,4 @@
 export interface House {
-  id: string;
+  id?: string;
   name: string;
 }
