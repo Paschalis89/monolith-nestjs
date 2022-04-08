@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { House } from './house.model';
 import { CreateHouseDto } from './dto/create-house.dto';
 
@@ -7,7 +7,13 @@ export class HouseService {
   private houses: House[] = [];
 
   getHouseById(id: string): House {
-    return this.houses.find((house) => house.id === id);
+    const found = this.houses.find((house) => house.id === id);
+
+    if (!found) {
+      throw new NotFoundException(`House with ID ${id} is not found`);
+    }
+
+    return found;
   }
 
   createHouse(createHouseDto: CreateHouseDto): House {
@@ -21,7 +27,8 @@ export class HouseService {
   }
 
   deleteHouse(id: string): void {
-    this.houses = this.houses.filter((house) => house.id !== id);
+    const found = this.getHouseById(id);
+    this.houses = this.houses.filter((house) => house.id !== found.id);
   }
 
   updateHouse(id: string, createHouseDto: CreateHouseDto): House {

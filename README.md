@@ -22,6 +22,23 @@ A Monolith NestJS project
 $ npm install
 ```
 
+## Validation dependencies
+
+github page: https://github.com/typestack/class-validator
+
+* class-validator
+* class-transformer
+
+## TypeORM dependencies and mongodb
+
+* typeorm
+* @nestjs/typeorm
+* mongodb
+* @types/mongodb
+
+typeORM used with Data Mapper Pattern
+
+
 ## Running the app
 
 ```bash

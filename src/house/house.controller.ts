@@ -18,7 +18,7 @@ export class HouseController {
   constructor(private houseService: HouseService) {}
 
   @Get()
-  getHouses(@Query() filterDto: GetHouseFilterDto): House[] {
+  getHouses(@Query() filterDto: GetHouseFilterDto): void {
     if (Object.keys(filterDto).length) {
     } else {
     }
