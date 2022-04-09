@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { House } from './house.model';
+import { House } from './house.entity';
 import { CreateHouseDto } from './dto/create-house.dto';
 import { HouseService } from './house.service';
 import { GetHouseFilterDto } from './dto/get-house-filter-dto';
@@ -18,24 +18,22 @@ export class HouseController {
   constructor(private houseService: HouseService) {}
 
   @Get()
-  getHouses(@Query() filterDto: GetHouseFilterDto): void {
-    if (Object.keys(filterDto).length) {
-    } else {
-    }
+  getHouses(@Query() filterDto: GetHouseFilterDto): Promise<House[]> {
+    return this.houseService.getHouses(filterDto);
   }
 
   @Post()
-  createHouse(@Body() createHouseDto: CreateHouseDto): House {
+  createHouse(@Body() createHouseDto: CreateHouseDto): Promise<House> {
     return this.houseService.createHouse(createHouseDto);
   }
 
   @Get('/:id')
-  getHouseById(@Param('id') id: string): House {
+  getHouseById(@Param('id') id: string): Promise<House> {
     return this.houseService.getHouseById(id);
   }
 
   @Delete('/:id')
-  deleteHuouse(@Param('id') id: string): void {
+  deleteHuouse(@Param('id') id: string): Promise<void> {
     return this.houseService.deleteHouse(id);
   }
 
@@ -43,7 +41,7 @@ export class HouseController {
   updateHouse(
     @Param('id') id: string,
     @Body() createHouseDto: CreateHouseDto,
-  ): House {
+  ): Promise<House> {
     return this.updateHouse(id, createHouseDto);
   }
 }

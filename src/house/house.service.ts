@@ -1,39 +1,50 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { House } from './house.model';
+import { House } from './house.entity';
 import { CreateHouseDto } from './dto/create-house.dto';
+import { HouseRepository } from './house.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { GetHouseFilterDto } from './dto/get-house-filter-dto';
 
 @Injectable()
 export class HouseService {
-  private houses: House[] = [];
+  constructor(
+    @InjectRepository(HouseRepository)
+    private houseRepository: HouseRepository,
+  ) {}
 
-  getHouseById(id: string): House {
-    const found = this.houses.find((house) => house.id === id);
+  getHouses(filterDto: GetHouseFilterDto): Promise<House[]> {
+    return this.houseRepository.getHouses(filterDto);
+  }
+
+  async getHouseById(id: string): Promise<House> {
+    const found = await this.houseRepository.findOneBy(id);
 
     if (!found) {
-      throw new NotFoundException(`House with ID ${id} is not found`);
+      throw new NotFoundException(`House with ID "${id}" not found`);
     }
 
     return found;
   }
 
-  createHouse(createHouseDto: CreateHouseDto): House {
-    const { name } = createHouseDto;
-
-    const house: House = {
-      name,
-    };
-    this.houses.push(house);
-    return house;
+  async createHouse(createHouseDto: CreateHouseDto): Promise<House> {
+    return this.houseRepository.createHouse(createHouseDto);
   }
 
-  deleteHouse(id: string): void {
-    const found = this.getHouseById(id);
-    this.houses = this.houses.filter((house) => house.id !== found.id);
+  async deleteHouse(id: string): Promise<void> {
+    const result = await this.houseRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`House with ID ${id} not found`);
+    }
   }
 
-  updateHouse(id: string, createHouseDto: CreateHouseDto): House {
-    const house = this.getHouseById(id);
+  async updateHouse(
+    id: string,
+    createHouseDto: CreateHouseDto,
+  ): Promise<House> {
+    const house = await this.getHouseById(id);
     house.name = createHouseDto.name;
+    await this.houseRepository.save(house);
     return house;
   }
 }
