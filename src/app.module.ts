@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { HouseModule } from './house/house.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { House } from './house/house.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { House } from './house/house.entity';
       useUnifiedTopology: true,
       entities: [House],
     }),
+    AuthModule,
   ],
 })
 export class AppModule {}
