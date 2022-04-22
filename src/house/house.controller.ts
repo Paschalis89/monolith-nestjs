@@ -7,13 +7,16 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { House } from './house.entity';
 import { CreateHouseDto } from './dto/create-house.dto';
 import { HouseService } from './house.service';
 import { GetHouseFilterDto } from './dto/get-house-filter-dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('house')
+@UseGuards(AuthGuard())
 export class HouseController {
   constructor(private houseService: HouseService) {}
 

@@ -38,6 +38,21 @@ github page: https://github.com/typestack/class-validator
 
 typeORM used with Data Mapper Pattern
 
+## Hashing Password with Bcrypt
+
+* bcrypt
+
+## Authentication with JWT
+
+* @nestjs/jwt
+* @nestjs/passport
+* passport
+* passport-jwt
+
+## Jwt validation dependencies
+
+* @types/passport-jwt
+
 
 ## Running the app
 
